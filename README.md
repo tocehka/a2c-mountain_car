@@ -2,6 +2,7 @@
 
 ### Installation and run
 ```
+$ git clone https://github.com/tocehka/a2c-mountain_car
 $ pip install -r requirements.txt
 $ python main.py
 ```
