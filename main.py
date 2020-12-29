@@ -3,6 +3,7 @@ from nn_models import Actor, Critic
 import torch.optim as optim
 from torch import Tensor, distributions
 import numpy as np
+import matplotlib.pyplot as plt
 
 class GameEmulator:
     def __init__(self, epochs, default_reward, reward_func):
@@ -28,7 +29,7 @@ class GameEmulator:
         d = distributions.Categorical(probs=softmax_probs)
         return d.sample(), d
 
-    def A_func(self, done, state, prev_state, gamma=0.97):
+    def A_func(self, done, state, prev_state, gamma=0.98):
         return (1 - done) * gamma * self.critic(Tensor(state)) - self.critic(Tensor(prev_state))
 
     def set_best(self, last_step=-3):
@@ -83,11 +84,18 @@ class GameEmulator:
                 state, _, done, _ = self.game.env_step(action.detach().data.numpy())
                 self.game.env_render()
 
+    def plot(self):
+        plt.plot([i for i,v in enumerate(self.overall_reward)], self.overall_reward)
+        plt.xlabel("Number of epochs")
+        plt.ylabel("Reward")
+        plt.show()
+
 if __name__ == "__main__":
     def reward_func(s2, s1, accelerator=315):
         return accelerator * (abs(s2[1]) - abs(s1[1]))
 
-    game = GameEmulator(250, -200, reward_func)
+    game = GameEmulator(300, -200, reward_func)
     game.train_model()
+    game.plot()
     game.play()
 
