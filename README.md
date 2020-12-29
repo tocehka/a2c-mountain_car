@@ -18,4 +18,5 @@ Namely it is speed difference at each env step
 ![Reward graph](/images/graph.png)
 
 We can observe some cognitive abilities since ~ 140th epoch
+
 After training - car can easy achive a flag at the peak of mountain
